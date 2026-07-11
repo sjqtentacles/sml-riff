@@ -43,6 +43,27 @@ Riff.findAll "IART" tree             (* every matching leaf *)
 container too small to hold its form 4cc, or a declared size that overruns the
 buffer.
 
+## Example
+
+`make example` builds and runs [`examples/demo.sml`](examples/demo.sml), which
+builds a small RIFF/WAVE container via both the flat chunk-list API
+(`encode`/`decode`) and the nested tree API (`parseTree`/`encodeTree`,
+`find`/`findAll`/`formOf`) (output is byte-identical under MLton and
+Poly/ML):
+
+```
+Flat API: encode/decode a chunk list:
+  encoded 40 bytes
+  chunk 'fmt ' = "PCM!"
+  chunk 'data' = "HELLOHI!"
+
+Tree API: nested RIFF/LIST containers:
+  encodeTree -> 68 bytes
+  parseTree round-trip formOf root = WAVE
+  find "INAM" -> "DemoWav"
+  findAll "fmt " -> 1 match(es)
+```
+
 ## Format details
 
 Each chunk has a 4-byte ASCII id, a 4-byte little-endian size, and a data
